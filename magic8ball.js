@@ -1,7 +1,25 @@
 var five = require('johnny-five');
-var lcd, board;
+var lcd, board, button;
 board = new five.Board();
 
+
+
+function setMessage() {
+  lcd.cursor(0, 0).clear().print('Magic 8ball!');
+  lcd.cursor(1,0).print('Ask ur question.');
+}
+
+function buttonPress() {
+  setMessage();
+  button.on('press', function() {
+    // lcd.clear().cursor(0, 0).print('Shame about that.')
+
+    lcd.clear().print("That's a shame.");
+    console.log('clicky');
+
+
+  });
+}
 
 board.on('ready', function() {
   lcd = new five.LCD({
@@ -10,26 +28,19 @@ board.on('ready', function() {
     rows: 2,
     cols: 20
   });
-  var button = new five.Button(2);
 
-  // tell the lcd yo will use these characters
-  lcd.useChar('check');
-  lcd.useChar('heart');
-  lcd.useChar('duck');
-  lcd.useChar('clock');
 
-  // line 1
-  lcd.clear().print('Cyclokitty!');
-  lcd.cursor(1, 0);
-  // line 2
-  lcd.print('I :heart: arduino');
 
-  this.wait(1000, function() {
-    lcd.clear().cursor(0, 0).print("I :check::heart: 2 :clock: :)");
-  });
+
+  button = new five.Button(2);
+
+  buttonPress();
+
+
 
   this.repl.inject({
-    lcd: lcd
+    lcd: lcd,
+    button: button
   });
 
 });
