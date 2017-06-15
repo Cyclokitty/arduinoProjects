@@ -2,6 +2,10 @@ var five = require('johnny-five');
 var lcd, board, button;
 board = new five.Board();
 
+// get a welcome message from magic8ball
+// ask your question and press the button
+// get back a response
+
 
 
 function setMessage() {
@@ -13,15 +17,18 @@ function buttonPress() {
   setMessage();
   button.on('press', function() {
     // lcd.clear().cursor(0, 0).print('Shame about that.')
+    var responses = ["That's a shame", "Nope. Nope. Nope", "Ok", "Bad Luck.", "Ask later", "Yes", "No chance.", "pffft ... no", "Well, alright", "Too drunk to know", "Too dim to know"];
 
-    lcd.clear().print("That's a shame.");
-    console.log('clicky');
+    var num = Math.floor(Math.random() * (responses.length));
 
-
+    var answer = responses[num];
+    lcd.clear().print(answer);
+    console.log(answer);
   });
 }
 
 board.on('ready', function() {
+  // initialize lcd
   lcd = new five.LCD({
     pins: [7, 8, 9, 10, 11, 12],
     backlight: 6,
@@ -29,14 +36,14 @@ board.on('ready', function() {
     cols: 20
   });
 
+  // initialize button
+  button = new five.Button({
+    pin: 2,
+    isPullup: true
+  });
 
-
-
-  button = new five.Button(2);
-
+  // this function runs the welcome screen and random message function
   buttonPress();
-
-
 
   this.repl.inject({
     lcd: lcd,
