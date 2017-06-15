@@ -1,12 +1,12 @@
-var five = require('johnny-five');
-var lcd, board, button;
-board = new five.Board();
-
 // get a welcome message from magic8ball
 // ask your question and press the button
 // get back a response
 
+var five = require('johnny-five');
+var lcd, board, button;
+board = new five.Board();
 
+// put functions in another file and export back here
 
 function setMessage() {
   lcd.cursor(0, 0).clear().print('Magic 8ball!');
@@ -39,6 +39,7 @@ board.on('ready', function() {
   // initialize button
   button = new five.Button({
     pin: 2,
+    // isPullUp initializes the button with a reset
     isPullup: true
   });
 
